@@ -13,26 +13,21 @@ print('connected ' + client)
 conn.send(name.encode())
 
 while True:
+    res_list = ['buy', 'order', 'sell']
     data = input('AI: ')
     conn.send(data.encode())
-    data = conn.recv(1024)
-    data = data.decode()
+    data = conn.recv(1024).decode()
     print(client, ':', data)
-    if data.lower() in ('hey', 'hello', 'hi'):
+    if data.lower() in ('hey', 'hello', 'hi', 'privet'):
         data = 'How may I help you?'
         conn.send(data.encode())
-        data = conn.recv(1024)
-        data = data.decode()
-        print(client, ':', data)
-    elif data.lower() in ('i want to buy'):
-        data = 'To buy something please visit our website'
-        conn.send(data.encode())
-        data = conn.recv(1024)
-        data = data.decode()
-        print(client, ':', data)
-    else:
-        data = input('AI: ')
-        conn.send(data.encode())
-        data = conn.recv(1024)
-        data = data.decode()
-        print(client, ':', data)
+        data = conn.recv(1024).decode()
+        print(client, ': ', data)
+    for i in data.lower().split():
+        for j in res_list:
+            if i == j:
+                data = 'To buy something please visit our website'
+                conn.send(data.encode())
+                data = conn.recv(1024).decode()
+                print(client, ':', data)
+
